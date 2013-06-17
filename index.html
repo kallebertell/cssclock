@@ -1,0 +1,146 @@
+<html>
+<head>
+<style>
+
+
+.hand {
+	width: 0;
+	height: 48%;
+	position: absolute;
+	top: 1%;
+	left: 50%;
+	-webkit-transform-origin: bottom center;
+	-webkit-transition: all 0.5s ease;
+}
+
+.hour {
+	border-left: 6px solid #ccc;
+	margin-left: -3px;
+	height: 30%;
+	top: 20%;
+}
+
+.minute {
+	border-left: 6px solid #ccc;
+	margin-left: -3px;
+}
+
+.second {
+	border-top: 10px solid #ccc;
+	width: 10px;
+}
+
+.hours {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.hours li {
+	margin: 0;
+	position: absolute;
+	font-family: sans-serif;
+	color: #999;
+	font-size: 22px;
+	line-height: 22px;
+	margin-left: -11px;
+	margin-top: -11px;
+}
+
+.clock {
+	position: relative;
+	margin: 0px auto;
+	margin-top: 50px;
+	border: 3px solid #ccc;
+	height: 500px;
+	width: 500px;
+	border-radius: 50%;
+}
+
+@media all and (max-width: 500px) {
+	.clock {
+		height: 300px;
+		width: 300px;
+	}
+}
+
+@media all and (min-width: 900px) {
+	.clock {
+		height: 750px;
+		width: 750px;
+	}
+}
+
+</style>
+</head>
+
+<body>
+	<div class="clock">
+		<div class="hour hand"></div>
+		<div class="minute hand"></div>
+		<div class="second hand"></div>
+		
+		<ul class="hours">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+			<li>11</li>
+			<li>12</li>
+		</ul>
+	</div>
+</body>
+
+
+<script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+<script>
+$(this).ready(function() {
+	"use strict";
+
+	var $hourHand = $('.hour.hand');
+	var $minuteHand = $('.minute.hand');
+	var $secondHand = $('.second.hand'); 
+	var $hours = $(".hours li");
+
+	function placeHours() {
+		$hours.each(function(idx, el) {
+			var $el = $(el);
+			var hour = idx + 1;
+			var degs = hour * 30;
+			var rads = degs * 0.0174532925;
+
+			$el.css('left', 50 + 50 * Math.sin(rads) + "%");
+			$el.css('top', Math.abs((50 + 50 * Math.cos(rads)) - 100) + "%");
+		});
+	}
+
+	function startClock() {
+		setTimeout(tick, 1000)
+	}
+
+	function tick() {
+		var time = new Date();
+		var hours = time.getHours();
+		var mins = time.getMinutes();
+		var secs = time.getSeconds();
+
+		$secondHand.css("-webkit-transform", "rotate(" + (6*secs) + "deg)");
+		$minuteHand.css("-webkit-transform", "rotate(" + (6*mins) + "deg)");
+		$hourHand.css("-webkit-transform", "rotate(" + (hours*30 + (mins/2)) + "deg)");
+
+		console.log(hours + ":" + mins + ":" + secs);
+
+		setTimeout(tick, 1000)
+	}
+
+	placeHours();
+	startClock();
+});
+</script>
+</html>
